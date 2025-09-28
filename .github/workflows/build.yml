@@ -15,7 +15,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential devscripts debhelper fakeroot \
             libdevmapper-dev libglib2.0-dev libreadline-dev libsigc++-2.0-dev \
-            libuuid1 uuid-dev pkg-config python3-all python3-pip python3-setuptools python3-wheel texinfo rsync gperf
+            libuuid1 uuid-dev pkg-config python3-all python3-pip python3-setuptools \
+            python3-wheel texinfo rsync gperf checkinstall
 
       - name: Download GNU parted
         run: |
