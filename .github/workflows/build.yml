@@ -1,0 +1,55 @@
+name: Build patched parted .deb
+
+on: push
+
+jobs:
+  build-deb:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential devscripts debhelper fakeroot \
+            libdevmapper-dev libglib2.0-dev libreadline-dev libsigc++-2.0-dev \
+            libuuid1 uuid-dev pkg-config python3-all python3-pip python3-setuptools python3-wheel texinfo rsync gperf
+
+      - name: Download GNU parted
+        run: |
+          wget https://ftp.gnu.org/gnu/parted/parted-3.6.tar.xz
+          tar -xvf parted-3.6.tar.xz
+          cd parted-3.6
+
+      - name: Move patch file
+        run: |
+          mv ../3.9.patch .
+
+      - name: Apply patch
+        run: |
+          patch -p0 < 3.9.patch
+
+      - name: Configure & build
+        run: |
+          ./configure --prefix=/usr --disable-static
+          make -j$(nproc)
+
+      - name: Run tests
+        run: sudo make check
+        
+      - name: Package .deb
+        run: |
+          sudo checkinstall --pkgname=parted-patched \
+                            --pkgversion=$(date +%Y%m%d%H%M)-patched \
+                            --backup=no \
+                            --deldoc=yes \
+                            --default \
+                            --install=no
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          files: "*.deb"

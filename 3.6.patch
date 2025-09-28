@@ -1,0 +1,17 @@
+--- parted/parted.c	2025-09-28 01:33:23.140620287 -0400
++++ parted/parted.c	2025-09-28 01:33:16.672621489 -0400
+@@ -1907,13 +1907,7 @@
+                                           start, end))
+                 goto error_destroy_constraint;
+         /* warn when shrinking partition - might lose data */
+-        if (part->geom.end < oldend)
+-                if (ped_exception_throw (
+-                            PED_EXCEPTION_WARNING,
+-                            PED_EXCEPTION_YES_NO,
+-                            _("Shrinking a partition can cause data loss, " \
+-                              "are you sure you want to continue?")) != PED_EXCEPTION_YES)
+-                        goto error_destroy_constraint;
++        if (part->geom.end < oldend);
+         ped_disk_commit (disk);
+ 
+         if ((*dev)->type != PED_DEVICE_FILE)
