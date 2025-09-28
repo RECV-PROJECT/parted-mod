@@ -25,11 +25,11 @@ jobs:
 
       - name: Move patch file
         run: |
-          mv ../3.9.patch .
+          mv ../3.6.patch .
 
       - name: Apply patch
         run: |
-          patch -p0 < 3.9.patch
+          patch -p0 < 3.6.patch
 
       - name: Configure & build
         run: |
@@ -38,7 +38,7 @@ jobs:
 
       - name: Run tests
         run: sudo make check
-        
+
       - name: Package .deb
         run: |
           sudo checkinstall --pkgname=parted-patched \
