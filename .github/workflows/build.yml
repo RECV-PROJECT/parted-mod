@@ -49,8 +49,13 @@ jobs:
                             --default \
                             --install=no
 
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: parted-patched-deb
+          path: parted-3.6/*.deb
+
       - name: Release
         uses: softprops/action-gh-release@v2
-        if: github.ref_type == 'tag'
         with:
-          files: "*.deb"
+          files: "parted-3.6/*.deb"
