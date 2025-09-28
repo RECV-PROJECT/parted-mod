@@ -1,7 +1,8 @@
 name: Build patched parted .deb
 
 on: push
-
+permissions:
+  contents: write
 jobs:
   build-deb:
     runs-on: ubuntu-latest
