@@ -21,25 +21,25 @@ jobs:
         run: |
           wget https://ftp.gnu.org/gnu/parted/parted-3.6.tar.xz
           tar -xvf parted-3.6.tar.xz
-          cd parted-3.6
-
-      - name: Move patch file
-        run: |
-          mv ../3.6.patch .
 
       - name: Apply patch
+        working-directory: parted-3.6
         run: |
+          cp ../3.6.patch .
           patch -p0 < 3.6.patch
 
       - name: Configure & build
+        working-directory: parted-3.6
         run: |
           ./configure --prefix=/usr --disable-static
           make -j$(nproc)
 
       - name: Run tests
+        working-directory: parted-3.6
         run: sudo make check
 
       - name: Package .deb
+        working-directory: parted-3.6
         run: |
           sudo checkinstall --pkgname=parted-patched \
                             --pkgversion=$(date +%Y%m%d%H%M)-patched \
